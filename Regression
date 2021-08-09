@@ -1,0 +1,33 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+x=pd.DataFrame({'revenue':[57,68,63,71,70,90,80,59,51,47,52,42],
+              'advertizing':[2.1,1.9,2.7,3.0,3.6,3.2,2.7,2.4,1.8,1.6,1.3,1.9],
+             'group':['a']*3+['b']*4+['c']*5})
+             
+sns.pairplot(x)
+             
+from sklearn import linear_model,datasets
+import numpy as np
+import statsmodels.api as sm
+
+
+regr=linear_model.LinearRegression()
+regr.fit(np.array(x.revenue).reshape(-1,1),np.array(x.advertizing).reshape(-1,1))
+pred_advertizing=regr.predict(np.array(x.revenue).reshape(-1,1))
+
+x['pred_advertizing']=pred_advertizing
+
+plt.style.use('seaborn-darkgrid')
+plt.scatter(x.revenue,x.advertizing,marker='*',s=100)
+plt.xlabel('revenue')
+plt.ylabel('advertizing')
+plt.plot(x.revenue,x.pred_advertizing,linewidth=8)
+plt.title('reg_plot')
+plt.show()
+
+
+regr.score(np.array(x.revenue).reshape(-1,1),np.array(x.advertizing).reshape(-1,1))
+
+print(regr.intercept_)
+
+print(regr.coef_)
